@@ -1,8 +1,16 @@
 package com.example.demo;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,9 +45,17 @@ public class ProductController {
 	}
 	
 	@RequestMapping("/getProducts")
-	public String getProducts(Products products)
+	public String getProducts(Products products, HttpServletRequest req, HttpServletResponse response)
 	{
-	//List<Products> listProducts = repo.findAll();
+		/*
+		 * ArrayList<Products> listProducts = (ArrayList<Products>) repo.findAll();
+		 * ArrayList<UUID> Ids = new ArrayList<UUID>(); for (Products p: listProducts) {
+		 * Ids.add(p.getPid()); } System.out.println(Ids); req.setAttribute("listIds",
+		 * Ids); RequestDispatcher rd = req.getRequestDispatcher("ViewProducts.jsp");
+		 * try { rd.forward(req, response); } catch (ServletException e) { // TODO
+		 * Auto-generated catch block e.printStackTrace(); } catch (IOException e) { //
+		 * TODO Auto-generated catch block e.printStackTrace(); }
+		 */
 		return "ViewProducts";
 	}	
 

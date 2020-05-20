@@ -9,6 +9,6 @@
 <body>
 <h1>Retrieve Product Details</h1>
 <h2> Product Details: </h2>
-<h5> ${Product} </h5>
+<h5> ${product} </h5>
 </body>
 </html>

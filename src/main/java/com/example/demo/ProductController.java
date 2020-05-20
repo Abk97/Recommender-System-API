@@ -69,7 +69,8 @@ public ModelAndView getProducts1(@RequestParam UUID pid)
 {
 	ModelAndView mv = new ModelAndView("Retrieve");
 	Products product = repo.findById(pid).orElse(null);
-	mv.addObject(product);
+	//System.out.println(product.getName());
+	mv.addObject("product", product);
 	return mv;
 }
 

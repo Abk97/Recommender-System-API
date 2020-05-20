@@ -2,6 +2,7 @@ package com.example.demo;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -45,38 +46,42 @@ public class ProductController {
 	}
 	
 	@RequestMapping("/getProducts")
-	public String getProducts(Products products, HttpServletRequest req, HttpServletResponse response)
+	public ModelAndView getProducts(Products products)
 	{
-		/*
-		 * ArrayList<Products> listProducts = (ArrayList<Products>) repo.findAll();
-		 * ArrayList<UUID> Ids = new ArrayList<UUID>(); for (Products p: listProducts) {
-		 * Ids.add(p.getPid()); } System.out.println(Ids); req.setAttribute("listIds",
-		 * Ids); RequestDispatcher rd = req.getRequestDispatcher("ViewProducts.jsp");
-		 * try { rd.forward(req, response); } catch (ServletException e) { // TODO
-		 * Auto-generated catch block e.printStackTrace(); } catch (IOException e) { //
-		 * TODO Auto-generated catch block e.printStackTrace(); }
-		 */
-		return "ViewProducts";
-	}	
+		ModelAndView mv = new ModelAndView("ViewProducts");
+		List<Products> list = repo.findAll();
+		Hashtable<UUID, String> table = new Hashtable<UUID, String>();
+		//ArrayList<UUID> ids = new ArrayList<UUID>();
+		//ArrayList<String> names = new ArrayList<String>();
+		for (Products p : list) {
+			table.put(p.getPid(), p.getName());
+			//names.add(p.getName());
+			//ids.add(p.getPid());
+		}
+		//mv.addObject("names", names);
+		//mv.addObject("ids", ids);
+		mv.addObject("table", table);
+		return mv;
+	}
 
-@PostMapping("/getProducts")
-public ModelAndView getProducts(@RequestParam UUID pid)
+@RequestMapping("/showProducts")
+public ModelAndView getProducts1(@RequestParam UUID pid)
 {
 	ModelAndView mv = new ModelAndView("Retrieve");
-	Products products = repo.findById(pid).orElse(null);
-	mv.addObject(products);
+	Products product = repo.findById(pid).orElse(null);
+	mv.addObject(product);
 	return mv;
 }
 
 @GetMapping("/products")
 @ResponseBody
-public List<Products> getProducts() {
+public List<Products> getProducts2() {
 	return repo.findAll();
 }
 
 @GetMapping("/products/{pid}")
 @ResponseBody
-public Optional<Products> getProducts2(@PathVariable("pid") UUID pid) {
+public Optional<Products> getProducts3(@PathVariable("pid") UUID pid) {
 	return repo.findById(pid);
 } 
 

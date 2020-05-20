@@ -9,13 +9,13 @@ import javax.persistence.Id;
 public class Products {
 	@Id
 	private UUID pid = UUID.randomUUID();
-	private String pname;
+	private String name;
 	private String category;
 	private String text;
 	
 	@Override
 	public String toString() {
-		return "Products [pid=" + pid + ", pname=" + pname + ", category=" + category + ", text=" + text + "]";
+		return "Products [pid=" + pid + ", name=" + name + ", category=" + category + ", text=" + text + "]";
 	}
 
 	public UUID getPid() {
@@ -26,11 +26,11 @@ public class Products {
 		this.pid = pid;
 	}
 
-	public String getPname() {
-		return pname;
+	public String getName() {
+		return name;
 	}
-	public void setPname(String pname) {
-		this.pname = pname;
+	public void setName(String name) {
+		this.name = name;
 	}
 	public String getCategory() {
 		return category;

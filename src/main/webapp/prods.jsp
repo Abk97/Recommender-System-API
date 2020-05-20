@@ -8,7 +8,7 @@
 </head>
 <body>
 <form method="post" action="addProducts">
-	Enter Product Name : <input type="text" name="pname">
+	Enter Product Name : <input type="text" name="name">
 	Enter Product Category : <input type="text" name="category">
 	Enter Product Description : <input type="text" name="text">
 	<input type="submit" value="Submit">

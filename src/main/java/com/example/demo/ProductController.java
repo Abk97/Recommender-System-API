@@ -87,9 +87,9 @@ public Optional<Products> getProducts3(@PathVariable("pid") UUID pid) {
 } 
 
 @PostMapping(path="/products", consumes= {"application/json"})
-public Products addProduct(@RequestBody Products products) {
-	repo.save(products);
-	return products;
+public Products addProduct(@RequestBody Products product) {
+	repo.save(product);
+	return product;
 }
 
 @DeleteMapping("/products/{pid}")
@@ -99,10 +99,19 @@ public String deleteProduct(@PathVariable("pid") UUID pid) {
 	return "deleted";
 }
 
-@PutMapping(path="/products", consumes= {"application/json"})
-public Products updateProduct(@RequestBody Products products) {
-	repo.save(products);
-	return products;
+@PutMapping(path="/products/{pid}", consumes= {"application/json"})
+public Products updateProduct(@RequestBody Products newProduct, @PathVariable("pid") UUID pid) {
+	return repo.findById(pid)
+			.map(prod -> {
+				prod.setName(newProduct.getName());
+				prod.setCategory(newProduct.getCategory());
+				prod.setText(newProduct.getText());
+				return repo.save(prod);
+			})
+			.orElseGet(() -> {
+				newProduct.setPid(pid);
+				return repo.save(newProduct);
+			});
 }
 }
 

@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -74,33 +76,33 @@ public ModelAndView getProducts1(@RequestParam UUID pid)
 	return mv;
 }
 
+@PostMapping(path="/products", consumes= {"application/json"})
+public ResponseEntity<Void> addProducts1(@RequestBody Products product) {
+	repo.save(product);
+	return new ResponseEntity<>(HttpStatus.CREATED);
+}
+
 @GetMapping("/products")
 @ResponseBody
-public List<Products> getProducts2() {
-	return repo.findAll();
+public ResponseEntity<List<Products>> getAllProducts() {
+	return ResponseEntity.status(HttpStatus.OK).body(repo.findAll());
 }
 
 @GetMapping("/products/{pid}")
 @ResponseBody
-public Optional<Products> getProducts3(@PathVariable("pid") UUID pid) {
-	return repo.findById(pid);
+public ResponseEntity<Optional<Products>> getOneProducts(@PathVariable("pid") UUID pid) {
+	return ResponseEntity.status(HttpStatus.OK).body(repo.findById(pid));
 } 
 
-@PostMapping(path="/products", consumes= {"application/json"})
-public Products addProduct(@RequestBody Products product) {
-	repo.save(product);
-	return product;
-}
-
 @DeleteMapping("/products/{pid}")
-public String deleteProduct(@PathVariable("pid") UUID pid) {
+public ResponseEntity<Void> deleteProduct(@PathVariable("pid") UUID pid) {
 	Products prod = repo.getOne(pid);
 	repo.delete(prod);
-	return "deleted";
+	return new ResponseEntity<>(HttpStatus.OK);
 }
 
 @PutMapping(path="/products/{pid}", consumes= {"application/json"})
-public Products updateProduct(@RequestBody Products newProduct, @PathVariable("pid") UUID pid) {
+public Products updateProducts(@RequestBody Products newProduct, @PathVariable("pid") UUID pid) {
 	return repo.findById(pid)
 			.map(prod -> {
 				prod.setName(newProduct.getName());
